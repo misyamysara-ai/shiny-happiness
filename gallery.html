@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY GALLERY</title>
+
+    <style>
+        .music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.music-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(255,182,213,0.7);
+}
+
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 1px 2px rgba(255,105,180,0.5));
+}
+
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+        /* MENU BUTTON */
+.menu-btn {
+    position: fixed;     /* stay at top-left */
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    font-size: 20px;
+    background: #f7c4d5;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #7a2a47;
+    font-weight: bold;
+    opacity: 1.4;        /* hidden look */
+    transition: 0.3s ease;
+}
+
+/* SIDEBAR (HIDDEN BY DEFAULT) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hide first */
+    width: 250px;
+    height: 100vh;
+    background: #f7c4d5;
+    padding-top: 40px;
+    transition: 0.35s ease;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+/* WHEN USER CLICKS -> SLIDE OUT */
+.sidebar.active {
+    left: 0;
+}
+
+/* MENU ITEMS ALIGNMENT */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 25px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.sidebar ul li a:hover {
+    background: #e487ad;
+    padding-left: 35px; /* nice slide effect */
+}
+       body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url("lily.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+/* BACKGROUND OVERLAY */
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 230, 240, 0.65); /* pink overlay */
+    z-index: -1;
+}
+
+
+        header {
+            color: deeppink;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 10px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .gallery-item:hover .caption {
+            opacity: 1;
+        }
+
+        /* LIGHTBOX */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            animation: fadeIn .3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #closeBtn {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+ /* Footer */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: white;
+            background: #d14b8f;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <body>
+
+<div class="bg-overlay"></div>
+
+    <!-- CUTE PINK MUSIC PLAYER WITH SONG CHOOSER -->
+<div class="music-bar">
+    <span class="music-icon">🎵💖</span>
+    
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati-Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi-Nadhif </option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia-Ghea </option>
+    </select>
+</div>
+
+    <!-- MENU BUTTON -->
+<div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+
+<!-- HIDDEN LEFT SIDEBAR -->
+<nav id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+<script>
+    const player = document.getElementById("player");
+    const songSelect = document.getElementById("songSelect");
+
+    songSelect.addEventListener("change", function() {
+        player.src = this.value;
+        player.play();
+    });
+</script>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+<header>
+    <h1>🌸MY GALLERY🌸</h1>
+</header>
+
+<div class="gallery-container">
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY4.jpg">
+        <div class="caption">TURN 20 MAY 27</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY5.jpg">
+        <div class="caption">TURN 20 MAY 27</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY6.jpg">
+        <div class="caption">TURN 20 MAY 27</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY7.jpg">
+        <div class="caption">TURN 20 MAY 27</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY8.jpg">
+        <div class="caption">EID AL-FITR</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY9.jpg">
+        <div class="caption">EID AL-FITR</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY10.jpg">
+        <div class="caption">EID AL-FITR</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="MY11.jpg">
+        <div class="caption">EID AL-FITR</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="N1.jpg">
+        <div class="caption">NIKO NEKO</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="N2.jpg">
+        <div class="caption">NIKO NEKO</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="N3.jpg">
+        <div class="caption">NIKO NEKO</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="N4.jpg">
+        <div class="caption">NIKO NEKO</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="K1.jpg">
+        <div class="caption">KALCER MARKET</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="K2.jpg">
+        <div class="caption">KALCER MARKET</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="K3.jpg">
+        <div class="caption">KALCER MARKET</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="K5.jpg">
+        <div class="caption">KALCER MARKET</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="C1.jpg">
+        <div class="caption">PINKY GIRLS</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="C2.jpg">
+        <div class="caption">PINKY GIRLS</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="C3.jpg">
+        <div class="caption">PINKY GIRLS</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="BB.jpg">
+        <div class="caption">PINKY GIRLS</div>
+    </div>
+
+     <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="M1.jpg">
+        <div class="caption">MUSEUM TERENGGANU</div>
+    </div>
+     <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="M2.jpg">
+        <div class="caption">MUSEUM TERENGGANU</div>
+    </div>
+     <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="M3.jpg">
+        <div class="caption">MUSEUM TERENGGANU</div>
+    </div>
+     <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="M4.jpg">
+        <div class="caption">MUSEUM TERENGGANU</div>
+    </div>
+</div>
+
+<!-- LIGHTBOX POPUP -->
+<div id="lightbox" onclick="closeLightbox()">
+    <span id="closeBtn">&times;</span>
+    <img id="lightboxImg" src="">
+</div>
+
+<script>
+    function openLightbox(element) {
+        document.getElementById("lightboxImg").src =
+            element.querySelector("img").src;
+        document.getElementById("lightbox").style.display = "flex";
+    }
+
+    function closeLightbox() {
+        document.getElementById("lightbox").style.display = "none";
+    }
+</script>
+
+<footer>
+    © 2025 Misya Mysara Bt Mat Mahadi | IMD318 Personal Website
+</footer>
+</body>
+</html>

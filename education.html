@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education - Mysha</title>
+
+    <style>
+        .music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.music-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(255,182,213,0.7);
+}
+
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 1px 2px rgba(255,105,180,0.5));
+}
+
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+        /* MENU BUTTON */
+.menu-btn {
+    position: fixed;     /* stay at top-left */
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    font-size: 20px;
+    background: #f7c4d5;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #7a2a47;
+    font-weight: bold;
+    opacity: 1.4;        /* hidden look */
+    transition: 0.3s ease;
+}
+
+/* SIDEBAR (HIDDEN BY DEFAULT) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hide first */
+    width: 250px;
+    height: 100vh;
+    background: #f7c4d5;
+    padding-top: 40px;
+    transition: 0.35s ease;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+/* WHEN USER CLICKS -> SLIDE OUT */
+.sidebar.active {
+    left: 0;
+}
+
+/* MENU ITEMS ALIGNMENT */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 25px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.sidebar ul li a:hover {
+    background: #e487ad;
+    padding-left: 35px; /* nice slide effect */
+}
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: url("lily.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Overlay for readability */
+        .overlay {
+    background: rgba(255, 245, 250, 0.55); /* more transparent */
+}
+            min-height: 100vh;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+
+        /* PAGE TITLE */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            color: #d6336c;
+        }
+
+        /* EDUCATION BOXES */
+        .edu-section {
+            width: 80%;
+            margin: auto;
+        }
+
+        .edu-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-left: 6px solid #ff66a3;
+        }
+
+        .edu-box h2 {
+            color: #ff4d94;
+        }
+
+        .edu-box p {
+            color: #333;
+            margin: 5px 0;
+        }
+        /* CARD LAYOUT WITH IMAGE LEFT + TEXT RIGHT */
+.edu-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+    border-left: 6px solid #ff66a3;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* FLOATING EFFECT */
+.edu-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* IMAGE ON LEFT */
+.edu-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* TEXT ON RIGHT */
+.edu-info {
+    flex: 1;
+}
+
+/* MAKE BACKGROUND MORE VISIBLE */
+.overlay {
+    background: rgba(255, 245, 250, 0.55);
+}
+
+    </style>
+</head>
+<body>
+<!-- CUTE PINK MUSIC PLAYER WITH SONG CHOOSER -->
+<div class="music-bar">
+    <span class="music-icon">🎵💖</span>
+    
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati-Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi-Nadhif </option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia-Ghea </option>
+    </select>
+</div>
+
+     <!-- MENU BUTTON -->
+<div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+
+<!-- HIDDEN LEFT SIDEBAR -->
+<nav id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+<script>
+    const player = document.getElementById("player");
+    const songSelect = document.getElementById("songSelect");
+
+    songSelect.addEventListener("change", function() {
+        player.src = this.value;
+        player.play();
+    });
+</script>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+<div class="overlay">
+
+    <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🌸MY EDUCATION🌸</h1>
+        <p>Here is my academic background</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="edu-section">
+
+        <div class="edu-box">
+    <img src="m.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>UNIVERSITY / DIPLOMA </h2>
+        <p><strong>UiTM KELANTAN </strong></p>
+        <p>DIPLOMA IN INFORMATION MANAGEMENT</p>
+        <p>Year: 2022 – 2025</p>
+        
+    </div>
+</div>
+
+
+       <div class="edu-box">
+    <img src="semjana.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>HIGH SCHOOL / SPM</h2>
+        <p><strong>SEKOLAH MENENGAH KEBANGSAAN SAUJANA</strong></p>
+        <p>FORM 3 - FORM 5</p>
+        <p>2020 - 2022</p>
+       
+    </div>
+</div>
+
+
+         <div class="edu-box">
+    <img src="smegs.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>HIGH SCHOOL</h2>
+        <p><strong>SEKOLAH MENENGAH KEBANGSAAN GUNTONG</strong></p>
+        <p>FORM 1 - FORM 3</p>
+        <p>2018 - 2020</p>
+       
+    </div>
+</div>
+
+
+         <div class="edu-box">
+    <img src="skskl.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>ELEMENTARY SCHOOL / UPSR</h2>
+        <p><strong>SEKOLAH KEBANGSAAN SERI KAMPUNG LAUT</strong></p>
+        <p>UPKK & UPSR</p>
+        <p>2016 - 2017</p>
+        
+    </div>
+</div>
+
+
+         <div class="edu-box">
+    <img src="skb.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>ELEMENTARY SCHOOL</h2>
+        <p><strong>SEKOLAH KEBANGSAAN BINTANG</strong></p>
+        <p>YEAR 2 - YEAR 4</p>
+        <p>2013 - 2015</p>
+       
+    </div>
+</div>
+
+<div class="edu-box">
+    <img src="skgb.jpg" class="edu-img">
+    
+    <div class="edu-info">
+        <h2>PRE-SCHOOL & ELEMENTARY SCHOOL</h2>
+        <p><strong>SEKOLAH KEBANGSAAN GONG BADAK</strong></p>
+        <p>6 YEARS OLD - YEAR 1</p>
+        <p>2011-2012</p>
+       
+    </div>
+</div>
+    </div>
+
+</body>
+</html>

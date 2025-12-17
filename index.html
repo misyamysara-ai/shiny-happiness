@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY PERSONAL WEBSITE</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ===== MUSIC BAR ===== */
+.music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+}
+
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* ===== HERO BACKGROUND ===== */
+.hero {
+    min-height: 100vh;
+    background: url("ii.jpg") no-repeat center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+/* ===== FLOATING INFO CARD ===== */
+.hero-content {
+    position: relative;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    padding: 45px 50px;
+    border-radius: 25px;
+    max-width: 750px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.35);
+    animation: floatCard 6s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+}
+
+/* ===== TEXT ===== */
+.hero-content h1 {
+    color: #ff5fa2;
+    font-size: 42px;
+    margin-bottom: 18px;
+}
+
+.hero-content p {
+    color: #333;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* ===== NAV BAR ===== */
+nav {
+    background: rgba(255,255,255,0.95);
+    text-align: center;
+    padding: 14px 0;
+    border-top: 1px solid #ffd6e8;
+    border-bottom: 1px solid #ffd6e8;
+}
+
+nav a {
+    color: #d14b8f;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 16px;
+    margin: 0 4px;
+    border-radius: 6px;
+}
+
+nav a:hover {
+    background: #ffd6e8;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: #ffd6e8;
+    color: #a63a6a;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+/* ===== BUBBLE ANIMATION ===== */
+.bubbles {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: rgba(255, 182, 213, 0.6);
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MUSIC BAR -->
+<div class="music-bar">
+    🎵💖
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+    </audio>
+
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati - Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi - Nadhif</option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia - Ghea</option>
+    </select>
+</div>
+
+<!-- 🫧 BUBBLES -->
+<div class="bubbles"></div>
+
+<!-- 🌷 HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Welcome to My Personal Space</h1>
+        <p>
+            Hi! I’m <strong>Misya Mysara Bt Mat Mahadi</strong>.<br><br>
+            This website is created for the <strong>IMD318</strong> course requirement.
+            Here you can explore my experiences, education, family, friends,
+            gallery, and favourite moments — all in one place.
+            <br><br>
+            Thank you for visiting 🤍
+        </p>
+    </div>
+</div>
+
+<!-- 🌸 NAVIGATION -->
+<nav>
+    <a href="index.html">HOME</a>
+    <a href="aboutme.html">ABOUT ME</a>
+    <a href="experiences.html">EXPERIENCES</a>
+    <a href="education.html">EDUCATION</a>
+    <a href="family.html">FAMILY</a>
+    <a href="friends.html">FRIENDS</a>
+    <a href="gallery.html">GALLERY</a>
+</nav>
+
+<!-- 🌷 FOOTER -->
+<footer>
+    © 2025 Misya Mysara Bt Mat Mahadi | IMD318 Personal Website
+</footer>
+
+<script>
+/* MUSIC PLAYER */
+const player = document.getElementById("player");
+const songSelect = document.getElementById("songSelect");
+
+songSelect.addEventListener("change", function () {
+    player.src = this.value;
+    player.play();
+});
+
+/* BUBBLE GENERATOR */
+const bubbleContainer = document.querySelector(".bubbles");
+
+function createBubble() {
+    const bubble = document.createElement("div");
+    bubble.classList.add("bubble");
+
+    const size = Math.random() * 30 + 10;
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
+    bubble.style.left = Math.random() * 100 + "vw";
+    bubble.style.animationDuration = Math.random() * 8 + 6 + "s";
+
+    bubbleContainer.appendChild(bubble);
+
+    setTimeout(() => {
+        bubble.remove();
+    }, 15000);
+}
+
+setInterval(createBubble, 600);
+</script>
+
+</body>
+</html>

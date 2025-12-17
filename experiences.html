@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY EXPERIENCES</title>
+
+<style>
+    .music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.music-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(255,182,213,0.7);
+}
+
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 1px 2px rgba(255,105,180,0.5));
+}
+
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+  .menu-btn {
+    position: fixed;     /* stay at top-left */
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    font-size: 20px;
+    background: #f7c4d5;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #7a2a47;
+    font-weight: bold;
+    opacity: 1.4;        /* hidden look */
+    transition: 0.3s ease;
+}
+
+
+/* SIDEBAR (HIDDEN BY DEFAULT) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hide first */
+    width: 250px;
+    height: 100vh;
+    background: #f7c4d5;
+    padding-top: 40px;
+    transition: 0.35s ease;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+/* WHEN USER CLICKS -> SLIDE OUT */
+.sidebar.active {
+    left: 0;
+}
+
+/* MENU ITEMS ALIGNMENT */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 25px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.sidebar ul li a:hover {
+    background: #e487ad;
+    padding-left: 35px; /* nice slide effect */
+}
+
+/* SHIFT CONTENT TO THE RIGHT */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: url("lily.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.page-overlay {
+    min-height: 100vh;
+    background: rgba(255, 240, 248, 0.45); /* pink overlay */
+    padding: 40px 0;
+}
+
+
+     .experience-card {
+        display: flex;
+        align-items: center;
+        background: #ffffffcc;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 30px auto;
+        width: 85%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        backdrop-filter: blur(4px);
+        transition: 0.35s ease; /* <-- added */
+    }
+
+    /* IMAGE */
+    .exp-img {
+        width: 230px;
+        height: 230px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-right: 25px;
+    }
+
+    /* OPTION 1 EFFECT — PUT HERE */
+    .experience-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(255, 100, 170, 0.4);
+    }
+
+    .exp-title {
+        color: #ff5fa2;
+        margin: 0 0 5px;
+        font-size: 28px;
+    }
+
+    .exp-date {
+        color: #888;
+        font-style: italic;
+        margin: 0 0 15px;
+    }
+
+    .exp-desc {
+        color: #333;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    /* Responsive for phone */
+    @media (max-width: 700px) {
+        .experience-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .exp-img {
+            margin: 0 0 15px 0;
+            width: 90%;
+            height: auto;
+        }
+
+        .exp-content {
+            max-width: 100%;
+        }
+    }
+ /* Footer */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: white;
+            background: #d14b8f;
+            border-radius: 15px;
+</style>
+</head>
+
+<body>
+    <div class="page-overlay">
+
+    <!-- CUTE PINK MUSIC PLAYER WITH SONG CHOOSER -->
+<div class="music-bar">
+    <span class="music-icon">🎵💖</span>
+    
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati-Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi-Nadhif </option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia-Ghea </option>
+    </select>
+</div>
+
+
+   <!-- MENU BUTTON -->
+<div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+
+<!-- HIDDEN LEFT SIDEBAR -->
+<nav id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<script>
+    const player = document.getElementById("player");
+    const songSelect = document.getElementById("songSelect");
+
+    songSelect.addEventListener("change", function() {
+        player.src = this.value;
+        player.play();
+    });
+</script>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+<h1 style="text-align:center; color:#ff4d94;">🌸MY EXPERIENCES🌸</h1>
+
+
+<!-- EXPERIENCE 1 -->
+<div class="experience-card">
+    <img src="bunkface.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">BUNKFACE : MALAM INI KITA PUNYA !</h2>
+        <p class="exp-date">13 NOVEMBER 2024</p>
+        <p class="exp-desc">
+          “Malam Ini Kita Punya” was surreal and unforgettable and truly special a memory. 
+        </p>
+    </div>
+</div>
+
+<!-- EXPERIENCE 2 -->
+<div class="experience-card">
+    <img src="a.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">MODELLING MISS MIA</h2>
+        <p class="exp-date">2 NOVEMBER 2024</p>
+        <p class="exp-desc">
+           First time experience being a model surely make me more confident.
+        </p>
+    </div>
+</div>
+
+<div class="experience-card">
+    <img src="b.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">CO-BARISTA MIMIEYLOVELIES</h2>
+        <p class="exp-date">12 DECEMBER 2024</p>
+        <p class="exp-desc">
+           Exploring the world of coffee beans.
+        </p>
+    </div>
+</div>
+
+<div class="experience-card">
+    <img src="c.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">MEET & GREET HARITH REAZAL</h2>
+        <p class="exp-date">4 MAY 2025</p>
+        <p class="exp-desc">
+           Inspired by Harith’s motivational talk and energy! ✨
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="E.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">MALEY MUSIKA</h2>
+        <p class="exp-date">29 JUNE 2025</p>
+        <p class="exp-desc">
+            Enjoyed a lively musical vibe and great performances by Aziz Harun! 🎶
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="saf24.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">FPM HANDBALL SAF UITM 2024</h2>
+        <p class="exp-date">29 JUNE 2024</p>
+        <p class="exp-desc">
+           Thrilled to watch the handball team in action! 🤾‍♀️
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="picsaf.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title"> FPM RUGBY SAF UITM 2024</h2>
+        <p class="exp-date">26 JUNE 2024</p>
+        <p class="exp-desc">
+            Fun moments supporting the rugby team on the field! 🏉
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="cgame.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">NR CGAMES HANDBALL 2025</h2>
+        <p class="exp-date">10 JANUARY 2025</p>
+        <p class="exp-desc">
+            Experiencing competitive handball up close was amazing! Win at 3rd place ⚡
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="aa.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">MEET & GREET ANWAR AMZAH</h2>
+        <p class="exp-date">29 JUNE 2025</p>
+        <p class="exp-desc">
+            Inspiring to meet a talented guitarist personally! 🎸
+        </p>
+    </div>
+</div>
+<div class="experience-card">
+    <img src="muz.jpg" class="exp-img" alt="Experience Photo">
+
+    <div class="exp-content">
+        <h2 class="exp-title">MUSEUM NEGARA</h2>
+        <p class="exp-date">30 NOVEMBER 2025</p>
+        <p class="exp-desc">
+            A delightful cultural journey through history! 🏛️
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
+	<footer>
+        <p>&copy;© 2025 Misya Mysara Bt Mat Mahadi | IMD318 Personal Website</p>
+	</footer>
+</body>
+</html>

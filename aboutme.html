@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+
+    <style>
+
+        .music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.music-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(255,182,213,0.7);
+}
+
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 1px 2px rgba(255,105,180,0.5));
+}
+
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+        /* MENU BUTTON */
+.menu-btn {
+    position: fixed;     /* stay at top-left */
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    font-size: 20px;
+    background: #f7c4d5;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #7a2a47;
+    font-weight: bold;
+    opacity: 1.4;        /* hidden look */
+    transition: 0.3s ease;
+}
+
+/* SIDEBAR (HIDDEN BY DEFAULT) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* hide first */
+    width: 250px;
+    height: 100vh;
+    background: #f7c4d5;
+    padding-top: 40px;
+    transition: 0.35s ease;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+/* WHEN USER CLICKS -> SLIDE OUT */
+.sidebar.active {
+    left: 0;
+}
+
+/* MENU ITEMS ALIGNMENT */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 25px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.sidebar ul li a:hover {
+    background: #e487ad;
+    padding-left: 35px; /* nice slide effect */
+}
+/* 🌸 BEAUTIFUL INFO TABLE */
+.info-table {
+    max-width: 700px;
+    margin: 25px auto;
+    background: linear-gradient(135deg, #ffe6f1, #fff0f8);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(209, 75, 143, 0.25);
+    animation: fadeIn 1.2s ease;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 2fr;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.75);
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-row:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(255, 105, 180, 0.35);
+}
+
+/* ICON */
+.info-icon {
+    font-size: 22px;
+    text-align: center;
+}
+
+/* LABEL */
+.info-label {
+    font-weight: bold;
+    color: #b0306b;
+    font-size: 15px;
+}
+
+/* VALUE */
+.info-value {
+    font-size: 15px;
+    color: #4b3b42;
+}
+
+/* MOBILE FRIENDLY */
+@media (max-width: 600px) {
+    .info-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        text-align: center;
+    }
+
+    .info-icon {
+        font-size: 26px;
+    }
+}
+/* 🌷 SOFT AESTHETIC FUN FACTS */
+.soft-caption {
+    max-width: 750px;
+    margin: 30px auto;
+    padding: 35px;
+    background: rgba(255, 240, 248, 0.8);
+    backdrop-filter: blur(8px);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(209, 75, 143, 0.25);
+    text-align: center;
+    animation: fadeIn 1.3s ease;
+}
+
+.soft-caption p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: #4b3b42;
+    margin-bottom: 18px;
+}
+
+.soft-caption p:last-child {
+    margin-bottom: 0;
+}
+
+.soft-caption .highlight {
+    font-style: italic;
+    color: #b0306b;
+    font-weight: 500;
+}
+/* 🌸 SOFT AESTHETIC SCROLLING GALLERY */
+.scroll-gallery {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 25px;
+    margin-top: 25px;
+    background: rgba(255, 225, 240, 0.8);
+    padding: 15px 0;
+    box-shadow: 0 6px 20px rgba(209, 75, 143, 0.2);
+}
+
+.scroll-content {
+    display: flex;
+    gap: 25px;
+    animation: scroll 30s linear infinite;
+}
+
+.scroll-item {
+    flex: 0 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-item img {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover effect */
+.scroll-item:hover img {
+    transform: scale(1.08) rotate(-1deg);
+    filter: brightness(1.05);
+}
+
+.scroll-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(209, 75, 143, 0.35);
+}
+
+/* Infinite scrolling animation */
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Optional: make gallery responsive */
+@media (max-width: 768px) {
+    .scroll-item img {
+        width: 200px;
+        height: 150px;
+    }
+    .scroll-content {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scroll-item img {
+        width: 150px;
+        height: 120px;
+    }
+}
+
+        body {
+            margin: 0;
+            font-family: "Poppins", Arial, sans-serif;
+            background: url("lily.jpg") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Soft overlay */
+        .overlay {
+            background: rgba(255, 240, 248, 0.8);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Fun animated header */
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #d14b8f;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            animation: pop 1.3s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile section */
+        .profile-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .profile-box img {
+            width: 260px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            transition: transform 0.4s;
+        }
+
+        .profile-box img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fun text bubble */
+        .bubble {
+            background: #ffe1f0;
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+            max-width: 500px;
+            border: 2px dashed #d14b8f;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Cute section title */
+        h2 {
+            text-align: center;
+            color: #c33c7f;
+            margin-top: 35px;
+        }
+
+        /* Fun biodata table */
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        table tr {
+            transition: background 0.3s;
+        }
+
+        table tr:hover {
+            background: #ffe6f4;
+        }
+
+        th, td {
+            border: 1px solid #e5a9c5;
+            padding: 12px;
+        }
+
+        th {
+            background: #f7c9dc;
+            color: #663044;
+            width: 30%;
+        }
+
+        td {
+            background: #ffe9f3;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: white;
+            background: #d14b8f;
+            border-radius: 15px;
+        }
+/* Scrolling Gallery */
+.scroll-gallery {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-top: 20px;
+    background: #ffe9f3;
+    padding: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-content {
+    display: flex;
+    gap: 20px;
+    animation: scroll 25s linear infinite;
+}
+
+.scroll-content img {
+    width: 250px;
+    height: 180px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Auto-scroll animation */
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+/* 🌷 SOFT AESTHETIC FUN FACTS */
+.soft-facts {
+    max-width: 750px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(255, 240, 248, 0.75);
+    backdrop-filter: blur(8px);
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(209, 75, 143, 0.25);
+    animation: fadeIn 1.2s ease;
+}
+
+.soft-facts ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.soft-facts li {
+    position: relative;
+    padding: 14px 18px 14px 42px;
+    margin-bottom: 14px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #4b3b42;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 🌸 flower bullet */
+.soft-facts li::before {
+    content: "🌸";
+    position: absolute;
+    left: 15px;
+    top: 14px;
+}
+
+/* hov*
+
+    </style>
+</head>
+<!-- Floating Petals / Flowers / Bubbles -->
+<div id="floating-particles"></div>
+
+<body>
+   <!-- CUTE PINK MUSIC PLAYER WITH SONG CHOOSER -->
+<div class="music-bar">
+    <span class="music-icon">🎵💖</span>
+    
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati-Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi-Nadhif </option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia-Ghea </option>
+    </select>
+</div>
+
+
+<script>
+    const player = document.getElementById("player");
+    const songSelect = document.getElementById("songSelect");
+
+    songSelect.addEventListener("change", function() {
+        player.src = this.value;
+        player.play();
+    });
+</script>
+
+    <!-- MENU BUTTON -->
+<div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+
+<!-- HIDDEN LEFT SIDEBAR -->
+<nav id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<script>
+    const player = document.getElementById("player");
+    const songSelect = document.getElementById("songSelect");
+
+    songSelect.addEventListener("change", function() {
+        player.src = this.value;
+        player.play();
+    });
+</script>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+<div class="overlay">
+
+    <div class="container">
+
+        <h1>🌸ABOUT ME🌸</h1>
+
+        <!-- Profile Section -->
+        <div class="profile-box">
+            <img src="mi.jpg" alt="My Photo">
+
+            <div class="bubble">
+              Hi, I’m Misya Mysara binti Mat Mahadi 💗 I come from a family of five siblings and, as the eldest, I’ve learned responsibility, patience, and care from a young age 🤍 Born in Kelantan and living in Terengganu for the past 11 years, it has truly become my second home 🌿 My mother is a teacher at SK Sungai Lerek, Setiu, and my father works as a staff member at UniSZA Campus Tembila,Besut and growing up with hardworking parents has shaped my values deeply ✨ I’m an emotional and thoughtful person who believes that kindness always returns 🌙 I cherish small, meaningful moments with my family and friends, value my independence, and my biggest goal right now is earning my degree to make my parents proud 💗 I love blooming flowers as they remind me of my own growth, and handwritten notes because they make me feel truly loved and appreciated ✨
+
+            </div>
+        </div>
+
+        <!-- Personal Information -->
+        <h2>✨ PERSONAL INFORMATION ✨</h2>
+
+        <div class="info-table">
+    <div class="info-row">
+        <span class="info-icon">👩‍🎓</span>
+        <span class="info-label">Full Name</span>
+        <span class="info-value">Misya Mysara binti Mat Mahadi</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-icon">🏡</span>
+        <span class="info-label">Hometown</span>
+        <span class="info-value">Kg Laut, Tumpat, Kelantan</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-icon">🎂</span>
+        <span class="info-label">Age</span>
+        <span class="info-value">20</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-icon">📅</span>
+        <span class="info-label">Birthday</span>
+        <span class="info-value">27 May 2005</span>
+    </div>
+
+    <div class="info-row">
+        <span class="info-icon">🌅</span>
+        <span class="info-label">Hobby</span>
+        <span class="info-value">Enjoying sunsets by the sea</span>
+    </div>
+</div>
+
+
+    <!-- Fun Facts Section -->
+<h2>🌸 FUN FACTS ABOUT ME 🌸</h2>
+
+<div class="soft-caption">
+    <p>
+        Soft pink skies, quiet beaches, and peaceful moments 🌸<br>
+        I find comfort in sunsets and sunrises, rainy days, and calm nights 🌙
+    </p>
+
+    <p>
+        Most days, you’ll find me by the sea, café hunting on weekends,<br>
+        sipping matcha at new places, or rewatching my favourite K-dramas ☕🎬
+    </p>
+
+    <p>
+        I love streetwear that feels like me, hidden gems found while thrifting,<br>
+        and little joys like lilies blooming and soft music playing in the background 🌷🎧
+    </p>
+
+    <p class="highlight">
+        I believe life feels most beautiful when it’s slow, gentle,<br>
+        and full of small moments ✨
+    </p>
+</div>
+
+<!-- Scrolling Gallery -->
+<h2>✨ PLACES I ADORE & THINGS I CHERISH ✨</h2>
+
+<div class="scroll-gallery">
+    <div class="scroll-content">
+        <div class="scroll-item"><img src="1.jpg" alt="Lily"></div>
+        <div class="scroll-item"><img src="2.jpg" alt="Flowers"></div>
+        <div class="scroll-item"><img src="3.jpg" alt="Pink Aesthetic"></div>
+        <div class="scroll-item"><img src="4.jpg" alt="Beach"></div>
+        <div class="scroll-item"><img src="6.jpg" alt="Lily Flower"></div>
+    </div>
+</div>
+
+<div class="scroll-gallery">
+    <div class="scroll-content">
+        <div class="scroll-item"><img src="11.jpg" alt="Lily"></div>
+        <div class="scroll-item"><img src="12.jpg" alt="Flowers"></div>
+        <div class="scroll-item"><img src="14.jpg" alt="Beach"></div>
+        <div class="scroll-item"><img src="29.jpg" alt="Sunset"></div>
+        <div class="scroll-item"><img src="28.jpg" alt="Flowers"></div>
+</div>
+<div class="scroll-gallery">
+    <div class="scroll-content">
+        <div class="scroll-item"><img src="lily.jpg" alt="Lily"></div>
+        <div class="scroll-item"><img src="26.jpg" alt="Flowers"></div>
+        <div class="scroll-item"><img src="21.jpg" alt="Pink Aesthetic"></div>
+        <div class="scroll-item"><img src="27.jpg" alt="Beach"></div>
+        <div class="scroll-item"><img src="22.jpg" alt="Lily Flower"></div>
+    </div>
+</div>
+
+    <footer>
+        © 2025 Misya Mysara Bt Mat Mahadi | IMD318 Personal Website
+    </footer>
+
+</div>
+
+</body>
+</html>

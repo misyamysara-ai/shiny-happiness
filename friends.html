@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Friends</title>
+<style>
+/* ================= BODY ================= */
+body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background: url("lo.jpg") no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Overlay */
+.overlay-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 230, 240, 0.6);
+    z-index: 0;
+}
+.page-content { position: relative; z-index: 1; }
+
+/* ================= MUSIC BAR ================= */
+.music-bar {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
+    background: #ffb6d5;
+    padding: 8px 12px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(255,182,213,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.music-bar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(255,182,213,0.7);
+}
+.music-bar audio {
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 1px 2px rgba(255,105,180,0.5));
+}
+.music-bar select {
+    border-radius: 12px;
+    padding: 4px 8px;
+    border: none;
+    background: #ffc0dd;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ================= MENU ================= */
+.menu-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    font-size: 20px;
+    background: #f7c4d5;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #7a2a47;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #f7c4d5;
+    padding-top: 40px;
+    transition: 0.35s ease;
+    box-sizing: border-box;
+    z-index: 999;
+}
+.sidebar.active { left: 0; }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar ul li { padding: 15px 25px; }
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+.sidebar ul li a:hover { background: #e487ad; padding-left: 35px; }
+
+/* ================= CARDS ================= */
+.border {
+    background: url("lily.jpg") repeat-x top, url("lily.jpg") repeat-x bottom;
+    padding: 40px 20px;
+}
+h1 {
+    text-align: center;
+    font-size: 40px;
+    color: #d14b8f;
+    margin-bottom: 40px;
+    animation: fadeInDown 1.3s ease;
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.card-container {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.18);
+    animation: fadeIn 1.5s ease;
+    transition: transform .4s, box-shadow .4s;
+}
+.card:hover { transform: translateY(-10px) scale(1.03); }
+.card img { width: 100%; height: 260px; object-fit: cover; }
+.info { padding: 18px; text-align: center; }
+.info h3 { margin: 0; color: #c23178; font-size: 20px; }
+.info p { margin-top: 6px; color: #7a5462; font-size: 14px; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ================= FOOTER ================= */
+footer {
+    margin-top: 30px;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: white;
+    background: #d14b8f;
+    border-radius: 15px;
+}
+
+/* ================= HEART RAIN ================= */
+.heart {
+    position: fixed;
+    top: -50px;
+    font-size: 20px;
+    z-index: 9999;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+}
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="overlay-bg"></div>
+
+<!-- Music Bar -->
+<div class="music-bar">
+    <span class="music-icon">🎵💖</span>
+    <audio id="player" controls>
+        <source src="Kebutuhan Hati.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <select id="songSelect">
+        <option value="Kebutuhan Hati.m4a">Kebutuhan Hati-Kaleb J</option>
+        <option value="jatuh cinta lagi.m4a">Jatuh Cinta Lagi-Nadhif</option>
+        <option value="Manusia Paling Bahagia.m4a">Manusia Paling Bahagia-Ghea</option>
+    </select>
+</div>
+
+<!-- Menu Button -->
+<div class="menu-btn" onclick="toggleSidebar()">☰ Menu</div>
+
+<!-- Sidebar -->
+<nav id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="family.html">Family</a></li>
+        <li><a href="friends.html">Friends</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<!-- Page Content -->
+<div class="border">
+    <h1>🌸MY LOVELY FRIENDS🌸</h1>
+    <div class="card-container">
+        <div class="card"><img src="5c.jpg" alt="Friend 1"><div class="info"><h3>CDIM1105C</h3><p>Who has been special to my heart since my diploma, my favorite class</p></div></div>
+        <div class="card"><img src="BB.jpg" alt="Friend 2"><div class="info"><h3>MY GIRLS</h3><p>My Love , Aishah , Nurin , Mira & Fatin</p></div></div>
+        <div class="card"><img src="alia.jpg" alt="Friend 3"><div class="info"><h3>ALIA ZULAIKHA</h3><p>My highschool bestie when Form 1</p></div></div>
+        <div class="card"><img src="DINA.jpg" alt="Friend 4"><div class="info"><h3>WARDINA SOFIA</h3><p>Your description — funny, energetic, creative, etc.</p></div></div>
+        <div class="card"><img src="aisara.jpg" alt="Friend 5"><div class="info"><h3>HANA & AISARA</h3><p>My beloved roomate , understanding and my port of my feelings</p></div></div>
+        <div class="card"><img src="FATIN.jpg" alt="Friend 6"><div class="info"><h3>FATIN NUR AQILAH</h3><p>My greatest roomate , housemate , groupmate and my ingenious friend</p></div></div>
+        <div class="card"><img src="zulfah.jpg" alt="Friend 7"><div class="info"><h3>FAIHA & ZULFAH</h3><p>My bestfriend when year 6 until now , going strong until now</p></div></div>
+        <div class="card"><img src="saf.jpg" alt="Friend 8"><div class="info"><h3>TEAM SAF</h3><p>The best teammate ever , bonding well even the age gap is different</p></div></div>
+    </div>
+</div>
+
+<footer>© 2025 Misya Mysara Bt Mat Mahadi | IMD318 Personal Website</footer>
+
+<script>
+// Sidebar toggle
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+// Music player
+const player = document.getElementById("player");
+const songSelect = document.getElementById("songSelect");
+songSelect.addEventListener("change", function() {
+    player.src = this.value;
+    player.play();
+});
+
+// Heart rain
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = '❤️';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.fontSize = (Math.random() * 24 + 16) + 'px';
+    heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+    heart.style.opacity = Math.random() * 0.8 + 0.2;
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 10000);
+}
+setInterval(createHeart, 200);
+</script>
+
+</body>
+</html>
